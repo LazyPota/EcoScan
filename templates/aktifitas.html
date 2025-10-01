@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktivitas - EcoScan</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-list-alt"></i> Aktivitas</h1>
+            <p>Riwayat Scan & Statistik</p>
+        </div>
+
+        <!-- Statistics Summary -->
+        <div class="stats-summary">
+            <div class="summary-card">
+                <div class="summary-icon" style="background: #667eea;">
+                    <i class="fas fa-calendar-week"></i>
+                </div>
+                <div class="summary-info">
+                    <div class="summary-value" id="weeklyScans">0</div>
+                    <div class="summary-label">Scan Minggu Ini</div>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon" style="background: #F59E0B;">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="summary-info">
+                    <div class="summary-value" id="weeklyPoints">0</div>
+                    <div class="summary-label">Poin Minggu Ini</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Options -->
+        <div class="filter-section">
+            <h3><i class="fas fa-filter"></i> Filter</h3>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="today">Hari Ini</button>
+                <button class="filter-btn" data-filter="week">Minggu Ini</button>
+                <button class="filter-btn" data-filter="month">Bulan Ini</button>
+            </div>
+        </div>
+
+        <!-- Activity Timeline -->
+        <div class="activity-timeline">
+            <h3><i class="fas fa-history"></i> Riwayat Scan</h3>
+            <div id="activityTimeline" class="timeline-list">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Belum ada riwayat scan. Mulai scan sampah pertamamu!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Statistics -->
+        <div class="category-stats">
+            <h3><i class="fas fa-chart-bar"></i> Statistik Kategori</h3>
+            <div class="stats-chart" id="categoryChart">
+                <div class="chart-item">
+                    <div class="chart-bar">
+                        <div class="chart-label">Plastik</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" data-category="plastic" style="width: 0%; background: #3B82F6;"></div>
+                        </div>
+                        <div class="chart-value">0</div>
+                    </div>
+                </div>
+                <div class="chart-item">
+                    <div class="chart-bar">
+                        <div class="chart-label">Kertas</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" data-category="paper" style="width: 0%; background: #10B981;"></div>
+                        </div>
+                        <div class="chart-value">0</div>
+                    </div>
+                </div>
+                <div class="chart-item">
+                    <div class="chart-bar">
+                        <div class="chart-label">Logam</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" data-category="metal" style="width: 0%; background: #6B7280;"></div>
+                        </div>
+                        <div class="chart-value">0</div>
+                    </div>
+                </div>
+                <div class="chart-item">
+                    <div class="chart-bar">
+                        <div class="chart-label">Kardus</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" data-category="cardboard" style="width: 0%; background: #F59E0B;"></div>
+                        </div>
+                        <div class="chart-value">0</div>
+                    </div>
+                </div>
+                <div class="chart-item">
+                    <div class="chart-bar">
+                        <div class="chart-label">Kaca</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" data-category="glass" style="width: 0%; background: #06B6D4;"></div>
+                        </div>
+                        <div class="chart-value">0</div>
+                    </div>
+                </div>
+                <div class="chart-item">
+                    <div class="chart-bar">
+                        <div class="chart-label">Sampah</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" data-category="trash" style="width: 0%; background: #EF4444;"></div>
+                        </div>
+                        <div class="chart-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="achievements-section">
+            <h3><i class="fas fa-trophy"></i> Pencapaian</h3>
+            <div class="achievements-grid">
+                <div class="achievement-item locked" data-achievement="first-scan">
+                    <div class="achievement-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Pemula</div>
+                        <div class="achievement-desc">Scan pertama</div>
+                    </div>
+                </div>
+                <div class="achievement-item locked" data-achievement="ten-scans">
+                    <div class="achievement-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Bersemangat</div>
+                        <div class="achievement-desc">10 scan</div>
+                    </div>
+                </div>
+                <div class="achievement-item locked" data-achievement="hundred-points">
+                    <div class="achievement-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Kolektor</div>
+                        <div class="achievement-desc">100 poin</div>
+                    </div>
+                </div>
+                <div class="achievement-item locked" data-achievement="eco-warrior">
+                    <div class="achievement-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">Eco Warrior</div>
+                        <div class="achievement-desc">50 scan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-container">
+            <a href="/beranda" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="/aktifitas" class="nav-item active">
+                <i class="fas fa-list-alt"></i>
+                <span>Aktivitas</span>
+            </a>
+            <a href="/scan" class="nav-item">
+                <i class="fas fa-qrcode"></i>
+                <span>Scan</span>
+            </a>
+            <a href="/dompet" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Dompet</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Saya</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/aktifitas.js') }}"></script>
+</body>
+</html>

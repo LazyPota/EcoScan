@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dompet - EcoScan</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-wallet"></i> Dompet</h1>
+            <p>Poin & Hadiah</p>
+        </div>
+
+        <!-- Points Balance Card -->
+        <div class="balance-card">
+            <div class="balance-header">
+                <div class="balance-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="balance-info">
+                    <div class="balance-label">Saldo Poin Anda</div>
+                    <div class="balance-amount" id="pointsBalance">0</div>
+                </div>
+            </div>
+            <div class="balance-footer">
+                <div class="balance-stat">
+                    <span class="stat-label">Poin Bulan Ini</span>
+                    <span class="stat-value" id="monthlyPoints">0</span>
+                </div>
+                <div class="balance-stat">
+                    <span class="stat-label">Total Ditukar</span>
+                    <span class="stat-value" id="totalRedeemed">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rewards Section -->
+        <div class="rewards-section">
+            <h3><i class="fas fa-gift"></i> Tukar Poin</h3>
+            <p class="section-subtitle">Tukarkan poin Anda dengan hadiah menarik!</p>
+            
+            <div class="rewards-grid">
+                <!-- Internet Package -->
+                <div class="reward-card" data-points="100">
+                    <div class="reward-badge">100 Poin</div>
+                    <div class="reward-icon" style="background: linear-gradient(135deg, #EC4899 0%, #BE185D 100%);">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="reward-info">
+                        <h4>1GB Internet Telkomsel</h4>
+                        <p>Kuota internet 1GB berlaku 7 hari</p>
+                    </div>
+                    <button class="reward-btn" onclick="redeemReward('1GB Internet Telkomsel', 100)">
+                        <i class="fas fa-exchange-alt"></i> Tukar
+                    </button>
+                </div>
+
+                <!-- Voucher Belanja -->
+                <div class="reward-card" data-points="150">
+                    <div class="reward-badge">150 Poin</div>
+                    <div class="reward-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="reward-info">
+                        <h4>Voucher Belanja Rp 25.000</h4>
+                        <p>Berlaku di minimarket terdekat</p>
+                    </div>
+                    <button class="reward-btn" onclick="redeemReward('Voucher Belanja Rp 25.000', 150)">
+                        <i class="fas fa-exchange-alt"></i> Tukar
+                    </button>
+                </div>
+
+                <!-- E-Wallet -->
+                <div class="reward-card" data-points="200">
+                    <div class="reward-badge">200 Poin</div>
+                    <div class="reward-icon" style="background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="reward-info">
+                        <h4>Saldo E-Wallet Rp 50.000</h4>
+                        <p>GoPay, OVO, atau Dana</p>
+                    </div>
+                    <button class="reward-btn" onclick="redeemReward('Saldo E-Wallet Rp 50.000', 200)">
+                        <i class="fas fa-exchange-alt"></i> Tukar
+                    </button>
+                </div>
+
+                <!-- Streaming -->
+                <div class="reward-card" data-points="250">
+                    <div class="reward-badge">250 Poin</div>
+                    <div class="reward-icon" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="reward-info">
+                        <h4>1 Bulan Netflix Basic</h4>
+                        <p>Streaming tanpa batas selama 30 hari</p>
+                    </div>
+                    <button class="reward-btn" onclick="redeemReward('1 Bulan Netflix Basic', 250)">
+                        <i class="fas fa-exchange-alt"></i> Tukar
+                    </button>
+                </div>
+
+                <!-- Coffee -->
+                <div class="reward-card" data-points="80">
+                    <div class="reward-badge">80 Poin</div>
+                    <div class="reward-icon" style="background: linear-gradient(135deg, #92400E 0%, #78350F 100%);">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <div class="reward-info">
+                        <h4>Voucher Kopi Gratis</h4>
+                        <p>1 cup kopi di Starbucks atau Kopi Kenangan</p>
+                    </div>
+                    <button class="reward-btn" onclick="redeemReward('Voucher Kopi Gratis', 80)">
+                        <i class="fas fa-exchange-alt"></i> Tukar
+                    </button>
+                </div>
+
+                <!-- Food Delivery -->
+                <div class="reward-card" data-points="120">
+                    <div class="reward-badge">120 Poin</div>
+                    <div class="reward-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="reward-info">
+                        <h4>Voucher Makan Rp 30.000</h4>
+                        <p>GoFood atau GrabFood</p>
+                    </div>
+                    <button class="reward-btn" onclick="redeemReward('Voucher Makan Rp 30.000', 120)">
+                        <i class="fas fa-exchange-alt"></i> Tukar
+                    </button>
+                </div>
+
+                <!-- Ride Voucher -->
+                <div class="reward-card" data-points="90">
+                    <div class="reward-badge">90 Poin</div>
+                    <div class="reward-icon" style="background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                    <div class="reward-info">
+                        <h4>Voucher Transportasi Rp 20.000</h4>
+                        <p>Gojek atau Grab</p>
+                    </div>
+                    <button class="reward-btn" onclick="redeemReward('Voucher Transportasi Rp 20.000', 90)">
+                        <i class="fas fa-exchange-alt"></i> Tukar
+                    </button>
+                </div>
+
+                <!-- Premium Internet -->
+                <div class="reward-card" data-points="300">
+                    <div class="reward-badge">300 Poin</div>
+                    <div class="reward-icon" style="background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="reward-info">
+                        <h4>5GB Internet XL/Indosat</h4>
+                        <p>Kuota internet 5GB berlaku 30 hari</p>
+                    </div>
+                    <button class="reward-btn" onclick="redeemReward('5GB Internet XL/Indosat', 300)">
+                        <i class="fas fa-exchange-alt"></i> Tukar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Redemption History -->
+        <div class="history-section">
+            <h3><i class="fas fa-history"></i> Riwayat Penukaran</h3>
+            <div id="redemptionHistory" class="history-list">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Belum ada riwayat penukaran</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-container">
+            <a href="/beranda" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="/aktifitas" class="nav-item">
+                <i class="fas fa-list-alt"></i>
+                <span>Aktivitas</span>
+            </a>
+            <a href="/scan" class="nav-item">
+                <i class="fas fa-qrcode"></i>
+                <span>Scan</span>
+            </a>
+            <a href="/dompet" class="nav-item active">
+                <i class="fas fa-wallet"></i>
+                <span>Dompet</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Saya</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dompet.js') }}"></script>
+</body>
+</html>

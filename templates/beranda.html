@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - EcoScan</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-recycle"></i> EcoScan</h1>
+            <p>Dashboard Aktivitas Daur Ulang</p>
+        </div>
+
+        <!-- User Stats Card -->
+        <div class="stats-card">
+            <div class="user-greeting">
+                <h2>Halo, EcoWarrior! 👋</h2>
+                <p>Terus semangat berkontribusi untuk lingkungan!</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalScans">0</div>
+                        <div class="stat-label">Total Scan</div>
+                    </div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalPoints">0</div>
+                        <div class="stat-label">Total Poin</div>
+                    </div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="co2Saved">0</div>
+                        <div class="stat-label">kg CO₂ Diselamatkan</div>
+                    </div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">
+                        <i class="fas fa-recycle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="recycledItems">0</div>
+                        <div class="stat-label">Item Didaur Ulang</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Breakdown -->
+        <div class="category-card">
+            <h3><i class="fas fa-chart-pie"></i> Kategori Sampah</h3>
+            <div class="category-list" id="categoryList">
+                <div class="category-item">
+                    <div class="category-bar">
+                        <div class="category-label">
+                            <span class="category-name">Plastik</span>
+                            <span class="category-count">0</span>
+                        </div>
+                        <div class="category-progress">
+                            <div class="category-fill" style="width: 0%; background: #3B82F6;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <div class="category-bar">
+                        <div class="category-label">
+                            <span class="category-name">Kertas</span>
+                            <span class="category-count">0</span>
+                        </div>
+                        <div class="category-progress">
+                            <div class="category-fill" style="width: 0%; background: #10B981;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <div class="category-bar">
+                        <div class="category-label">
+                            <span class="category-name">Logam</span>
+                            <span class="category-count">0</span>
+                        </div>
+                        <div class="category-progress">
+                            <div class="category-fill" style="width: 0%; background: #6B7280;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <div class="category-bar">
+                        <div class="category-label">
+                            <span class="category-name">Kardus</span>
+                            <span class="category-count">0</span>
+                        </div>
+                        <div class="category-progress">
+                            <div class="category-fill" style="width: 0%; background: #F59E0B;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <div class="category-bar">
+                        <div class="category-label">
+                            <span class="category-name">Kaca</span>
+                            <span class="category-count">0</span>
+                        </div>
+                        <div class="category-progress">
+                            <div class="category-fill" style="width: 0%; background: #06B6D4;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h3><i class="fas fa-bolt"></i> Aksi Cepat</h3>
+            <div class="action-buttons">
+                <a href="/scan" class="action-btn primary">
+                    <i class="fas fa-qrcode"></i>
+                    <span>Scan Sampah</span>
+                </a>
+                <a href="/dompet" class="action-btn secondary">
+                    <i class="fas fa-gift"></i>
+                    <span>Tukar Poin</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <h3><i class="fas fa-clock"></i> Aktivitas Terakhir</h3>
+            <div id="recentActivityList" class="activity-list">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Belum ada aktivitas. Mulai scan sampah pertamamu!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-container">
+            <a href="/beranda" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="/aktifitas" class="nav-item">
+                <i class="fas fa-list-alt"></i>
+                <span>Aktivitas</span>
+            </a>
+            <a href="/scan" class="nav-item">
+                <i class="fas fa-qrcode"></i>
+                <span>Scan</span>
+            </a>
+            <a href="/dompet" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Dompet</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Saya</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/beranda.js') }}"></script>
+</body>
+</html>
