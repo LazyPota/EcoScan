@@ -35,9 +35,7 @@ def load_model():
     print(f"   {tflite_path}")
     
     if not os.path.exists(tflite_path):
-        print("⚠️  MODEL TIDAK DITEMUKAN - Menggunakan DEMO MODE")
-        INTERPRETER = "DEMO_MODE"
-        return INTERPRETER
+        raise FileNotFoundError(f"Model TFLite tidak ditemukan di: {tflite_path}")
     
     try:
         # Load TFLite model
@@ -56,10 +54,7 @@ def load_model():
         return INTERPRETER
         
     except Exception as e:
-        print(f"⚠️  Error loading model: {str(e)}")
-        print("⚠️  Menggunakan DEMO MODE - Model akan memberikan prediksi random untuk testing")
-        INTERPRETER = "DEMO_MODE"
-        return INTERPRETER
+        raise RuntimeError(f"Gagal memuat model TFLite: {str(e)}")
 
 def prepare_image(pil_image, target_size=(224, 224)):
     """Preprocessing gambar untuk ResNet50 TFLite"""
@@ -158,43 +153,31 @@ def predict():
                 "status": "error"
             }), 500
             
-        # Prediksi dengan TFLite atau DEMO MODE
+        # Prediksi dengan TFLite
         try:
             interpreter = model
             
-            # Check if in demo mode
-            if interpreter == "DEMO_MODE":
-                # Demo mode - always return plastic with 89% confidence
-                predicted_label = 'plastic'
-                predicted_idx = CLASS_NAMES.index(predicted_label)
-                confidence = 0.89
+            # Real model inference
+            # Get input and output tensors
+            input_details = interpreter.get_input_details()
+            output_details = interpreter.get_output_details()
+
+            # Set input tensor
+            interpreter.set_tensor(input_details[0]['index'], processed_img)
+
+            # Run inference
+            interpreter.invoke()
+
+            # Get output tensor
+            predictions = interpreter.get_tensor(output_details[0]['index'])
+
+            # Apply softmax to get probabilities
+            probs = tf.nn.softmax(predictions[0]).numpy()
                 
-                # Create fake probabilities for demo mode
-                probs = np.array([0.02, 0.01, 0.03, 0.02, 0.89, 0.03])  # plastic has 89%
-                
-                print(f"🎭 DEMO MODE: Predicted {predicted_label} with {confidence*100:.1f}% confidence")
-            else:
-                # Real model inference
-                # Get input and output tensors
-                input_details = interpreter.get_input_details()
-                output_details = interpreter.get_output_details()
-                
-                # Set input tensor
-                interpreter.set_tensor(input_details[0]['index'], processed_img)
-                
-                # Run inference
-                interpreter.invoke()
-                
-                # Get output tensor
-                predictions = interpreter.get_tensor(output_details[0]['index'])
-                
-                # Apply softmax to get probabilities
-                probs = tf.nn.softmax(predictions[0]).numpy()
-                    
-                # Dapatkan prediksi terbaik
-                predicted_idx = int(np.argmax(probs))
-                predicted_label = CLASS_NAMES[predicted_idx]
-                confidence = float(probs[predicted_idx])
+            # Dapatkan prediksi terbaik
+            predicted_idx = int(np.argmax(probs))
+            predicted_label = CLASS_NAMES[predicted_idx]
+            confidence = float(probs[predicted_idx])
             
             # Informasi kategori sampah dengan sistem poin
             category_info = {
